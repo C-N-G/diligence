@@ -1,0 +1,14 @@
+{
+  "name": "diligence",
+  "version": "1.0.0",
+  "description": "web control program for servers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cormac Gudge",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
