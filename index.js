@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const fs = require('fs');
 const auth = require('./auth')
 const users = require('./users')
 const controller = require('./controller')
@@ -21,7 +22,7 @@ app.use(express.urlencoded({
   extended: true
 }))
 
-// app.use(auth.intercept)
+app.use(auth.intercept)
 
 app.post('/login.html', auth.authenticate)
 
@@ -37,3 +38,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.listen(port, () => {
   console.log(`Diligence app listening at http://localhost:${port}`)
 })
+
+let status = {state: 'ready'}
+write_status(status)
+function write_status(status) {
+  let filePath = path.join(__dirname, '/data', 'status.json')
+  fs.writeFileSync(filePath, JSON.stringify(status), 'utf8')
+}

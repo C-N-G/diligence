@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 const pbkdf2 = require('pbkdf2')
-const crypto = require('crypto')
 
 let auth = {};
 
