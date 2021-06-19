@@ -4,11 +4,14 @@
   "description": "web control program for servers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "node index.js",
+    "test": "nodemon index.js"
   },
   "author": "Cormac Gudge",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "pbkdf2": "^3.1.2"
   }
 }
