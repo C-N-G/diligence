@@ -1,9 +1,8 @@
 const express = require('express')
-const path = require('path')
-const fs = require('fs');
-const auth = require('./auth')
-const users = require('./users')
-const controller = require('./controller')
+const auth = require('./controllers/auth')
+const users = require('./controllers/users')
+const controller = require('./controllers/controller')
+const util = require('./lib/util.js')
 
 const app = express()
 const port = 1444
@@ -22,9 +21,22 @@ app.use(express.urlencoded({
   extended: true
 }))
 
+app.set('view engine', 'pug')
+app.set('views', './pages')
+
 app.use(auth.intercept)
 
-app.post('/login.html', auth.authenticate)
+app.get('/login', (req, res, next) => {
+  res.render('login', { title: 'Hey', message: 'Hello there!' })
+})
+app.get('/home', (req, res, next) => {
+  res.render('home')
+})
+app.get('/users', (req, res, next) => {
+  res.render('users')
+})
+
+app.post('/login', auth.authenticate)
 
 app.get('/api/users', users.get);
 app.post('/api/users', users.post);
@@ -33,15 +45,11 @@ app.delete('/api/users', users.delete);
 
 app.post('/api/controller', controller.post);
 
-app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, 'public'))) // static folder setup 
 
 app.listen(port, () => {
   console.log(`Diligence app listening at http://localhost:${port}`)
 })
 
 let status = {state: 'ready'}
-write_status(status)
-function write_status(status) {
-  let filePath = path.join(__dirname, '/data', 'status.json')
-  fs.writeFileSync(filePath, JSON.stringify(status), 'utf8')
-}
+util.write_status(status)

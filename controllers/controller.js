@@ -1,11 +1,10 @@
 const { exec } = require("child_process");
-const fs = require('fs');
-const path = require('path');
+const util = require('../lib/util.js')
 let controller = {};
 
 controller.post = function(req, res, next) {
 
-  let status = read_status();
+  let status = util.read_status();
 
   if (status.state == "waiting") {
     res.send(`
@@ -22,7 +21,7 @@ controller.post = function(req, res, next) {
   console.log("stopping server services")
   let returnTime = get_return_time(duration);
   status = {state: "waiting", returnTime: returnTime}
-  write_status(status);
+  util.write_status(status);
 
   
 
@@ -31,11 +30,11 @@ controller.post = function(req, res, next) {
     execute_command(cmd)
     console.log("starting server services")
     status = {state: "ready"}
-    write_status(status);
+    util.write_status(status);
   }, duration);
 
 
-  res.redirect('/home.html');
+  res.redirect('/home');
 
 }
 
@@ -56,17 +55,6 @@ function execute_command(cmd) {
 function get_return_time(duration) {
   let returnTime = new Date (Date.now() + duration);
   return returnTime.toString();
-}
-
-function read_status() {
-  let filePath = path.join(__dirname, '/data', 'status.json')
-  const status = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(status)
-}
-
-function write_status(status) {
-  let filePath = path.join(__dirname, '/data', 'status.json')
-  fs.writeFileSync(filePath, JSON.stringify(status), 'utf8')
 }
 
 module.exports = controller

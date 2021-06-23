@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    include includes/head.pug
+    
+  body
+    .d-flex.justify-content-center.text-center
+      div
+        h1 Diligence
+        br
+        h2 Add User
+        br
+        form(action='/api/users' method='post')
+          input(type='text' name='username' placeholder='username')
+          input(type='text' name='password' placeholder='password')
+          input(type='submit')
+  
+  include includes/bootstrap.pug

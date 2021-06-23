@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    include includes/head.pug
+    
+  body
+    .d-flex.justify-content-center.text-center
+      div
+        h1 Welcome to Diligence
+        br
+        h2 Home
+        br
+        p Please select a duration to shut off the services for
+        form(action='/api/controller' method='post')
+          .form-group
+            label(for='shutdownDuration') Shutdown duration
+            select#shutdownDuration.form-control(name='shutdownDuration')
+              option(value='15') 15 minutes
+              option(value='30') 30 minutes
+              option(value='45') 45 minutes
+              option(value='60') 60 minutes
+          button.btn.btn-primary(type='submit') Shutdown
+  
+  include includes/bootstrap.pug

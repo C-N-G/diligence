@@ -1,6 +1,5 @@
-const path = require('path')
-const fs = require('fs')
 const pbkdf2 = require('pbkdf2')
+const util = require('../lib/util.js')
 
 let auth = {};
 
@@ -11,11 +10,11 @@ auth.intercept = function (req, res, next) {
     return
   } else {
     req.session.authenticated = false;
-    if (req.path == "/login.html") {
+    if (req.path == "/login") {
       next()
       return
     } else {
-      res.redirect("/login.html")
+      res.redirect("/login")
     }
   }
 
@@ -23,7 +22,7 @@ auth.intercept = function (req, res, next) {
 
 auth.authenticate = function(req, res, next) {
   
-  const users = read_users()
+  const users = util.read_users()
 
   let i = 0;
   for (i; i < users.length; i++) {
@@ -35,20 +34,14 @@ auth.authenticate = function(req, res, next) {
     if (users[i].username === req.body.username && users[i].password === password) {
       req.session.authenticated = true;
       console.log(`login successful with name: ${req.body.username}`)
-      res.redirect('/home.html')
+      res.redirect('/home')
       return
     }
   }
 
   console.log(`login failed with name: ${req.body.username}`)
-  res.redirect('/login.html')
+  res.redirect('/login')
 
-}
-
-function read_users() {
-  let filePath = path.join(__dirname, '/data', 'users.json')
-  const users = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(users)
 }
 
 module.exports = auth;
